@@ -298,6 +298,7 @@ public class FrmCuaca extends javax.swing.JFrame {
     private void MenuHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuHelpActionPerformed
         // TODO add your handling code here:
         DlgHelp menuHelp = new DlgHelp();
+        menuHelp.setLocationRelativeTo(null);
         menuHelp.setVisible(true);
     }//GEN-LAST:event_MenuHelpActionPerformed
 
@@ -324,7 +325,7 @@ public class FrmCuaca extends javax.swing.JFrame {
                     lblTekanan.setText(rse.getString("tekanan_udara")+ " hPa");
                     
                 } else JOptionPane.showMessageDialog(null,"Punten data kota eta mah teu aya" + "\n" + 
-                                                          "Mangga dicobian deui, Hatur Nuhun!!!");
+                                                          "Mangga dicobian deui, Hatur Nuhun");
 
             }catch(Exception e) {
                 e.printStackTrace();
