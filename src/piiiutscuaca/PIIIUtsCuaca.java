@@ -5,7 +5,10 @@
  */
 package piiiutscuaca;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import piiiutscuaca.res.Service;
 import piiiutscuaca.view.FrmCuaca;
+import piiiutscuaca.view.koneksi;
 
 /**
  * main class
@@ -18,10 +21,23 @@ public class PIIIUtsCuaca {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setUser("root");
+        dataSource.setPassword("");
+        dataSource.setDatabaseName("p3_java?serverTimezone=UTC");
+        dataSource.setServerName("localhost");
+
+        dataSource.setPortNumber(3306);
+        Service service = new Service();
+        service.setDataSource(dataSource);
         
-        FrmCuaca frmCuaca = new FrmCuaca();
-        frmCuaca.setLocationRelativeTo(null);
-        frmCuaca.setVisible(true);
+        koneksi koneksi = new koneksi();
+        koneksi.setLocationRelativeTo(null);
+        koneksi.setVisible(true);
+        
+        //FrmCuaca frmCuaca = new FrmCuaca();
+        //frmCuaca.setLocationRelativeTo(null);
+        //frmCuaca.setVisible(true);
     }
     
 }

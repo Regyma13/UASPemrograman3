@@ -11,7 +11,7 @@ package piiiutscuaca.model;
  */
 public class Cuaca {
     
-    private String id;
+    private int id;
     private String namaKota;
     private double suhu;
     private double suhuMaks;
@@ -20,7 +20,7 @@ public class Cuaca {
     private double kelembapan;
     private double tekanan;
 
-    public Cuaca(String id, String namaKota, double suhu, 
+    public Cuaca(int id, String namaKota, double suhu, 
             double suhuMaks, double suhuMin, double kecepatanAngin,
             double kelembapan, double tekanan) {
         this.id = id;
@@ -36,11 +36,11 @@ public class Cuaca {
     public Cuaca() {
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

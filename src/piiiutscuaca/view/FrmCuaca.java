@@ -5,6 +5,11 @@
  */
 package piiiutscuaca.view;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -55,6 +60,7 @@ public class FrmCuaca extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         MenuHelp = new javax.swing.JMenuItem();
         MenuAbout = new javax.swing.JMenuItem();
+        MenuInput = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -241,6 +247,14 @@ public class FrmCuaca extends javax.swing.JFrame {
         });
         jMenu6.add(MenuAbout);
 
+        MenuInput.setText("Input Data");
+        MenuInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuInputActionPerformed(evt);
+            }
+        });
+        jMenu6.add(MenuInput);
+
         jMenuBar4.add(jMenu6);
 
         setJMenuBar(jMenuBar4);
@@ -294,57 +308,34 @@ public class FrmCuaca extends javax.swing.JFrame {
 
     private void txtInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInputActionPerformed
         // TODO add your handling code here:
-        String kota = (String)txtInput.getText();
-        txtInput.setText(txtInput.getText().toLowerCase());
-        
-        if (txtInput.getText().equals("bandung")){
-            cbWaktu.setEnabled(true);
-        }
-        if (txtInput.getText().equals("surabaya")){
-            cbWaktu.setEnabled(true);
-        }
-        if (txtInput.getText().equals("jakarta")){
-            cbWaktu.setEnabled(true);
-        }
-        
-        if(txtInput.getText().equals("bandung")){
-            lblCuaca.setText("Cuaca di " +kota);
-            lblHari.setText("Hari ini");
-            lblSuhu.setText("19.0" + (char)0x00B0 + "C");
-            lblSuhuMaks.setText("33.0" + (char)0x00B0 + "C");
-            lblSuhuMin.setText("10.0" + (char)0x00B0 + "C");
-            lblKecepatan.setText("40.0 m/s");
-            lblKelembapan.setText("200.2 %");
-            lblTekanan.setText("300.2 hPa");              
-        } else if(txtInput.getText().equals("surabaya")){
-            lblCuaca.setText("Cuaca di " +kota);
-            lblHari.setText("Hari ini");
-            lblSuhu.setText("27.0" + (char)0x00B0 + "C");
-            lblSuhuMaks.setText("40.0" + (char)0x00B0 + "C");
-            lblSuhuMin.setText("20.0" + (char)0x00B0 + "C");
-            lblKecepatan.setText("10.0 m/s");
-            lblKelembapan.setText("110.2 %");
-            lblTekanan.setText("220.2 hPa");
-        } else if(txtInput.getText().equals("jakarta")){
-            lblCuaca.setText("Cuaca di " +kota);
-            lblHari.setText("Hari ini");
-            lblSuhu.setText("40.0" + (char)0x00B0 + "C");
-            lblSuhuMaks.setText("50.0" + (char)0x00B0 + "C");
-            lblSuhuMin.setText("30.0" + (char)0x00B0 + "C");
-            lblKecepatan.setText("30.0 m/s");
-            lblKelembapan.setText("90.2 %");
-            lblTekanan.setText("100.2 hPa");
-        } else 
-          JOptionPane.showMessageDialog(null, "Punten Kota " +kota+ " mah teu aya, nembe" + "\n" + 
-                                              "BANDUNG, JAKARTA, SURABAYA hungkul" + "\n" +
-                                              "Mangga dicobian deui, Hatur Nuhun!!!");
-        
+                
+                try{
+                Connection conn = (Connection)piiiutscuaca.koneksi.koneksi.configDB();
+                String sql = "select * from t_cuaca where nama_kota='"+txtInput.getText()+"'";
+                Statement sta = conn.createStatement();
+                ResultSet rse = sta.executeQuery(sql);
+                if(rse.next()){
+                    lblCuaca.setText("Cuaca di " +rse.getString("nama_kota"));
+                    lblSuhu.setText(rse.getString("suhu")+ (char)0x00B0 + "C");
+                    lblSuhuMaks.setText(rse.getString("suhu_maks")+ (char)0x00B0 + " C");
+                    lblSuhuMin.setText(rse.getString("suhu_min")+ (char)0x00B0 + " C");
+                    lblKecepatan.setText(rse.getString("kecepatan_angin")+ " m/s");
+                    lblKelembapan.setText(rse.getString("kelembapan")+ " %");
+                    lblTekanan.setText(rse.getString("tekanan_udara")+ " hPa");
+                    
+                } else JOptionPane.showMessageDialog(null,"Punten data kota eta mah teu aya" + "\n" + 
+                                                          "Mangga dicobian deui, Hatur Nuhun!!!");
+
+            }catch(Exception e) {
+                e.printStackTrace();
+            }         
+          
     }//GEN-LAST:event_txtInputActionPerformed
 
     private void cbWaktuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbWaktuActionPerformed
         // TODO add your handling code here:
         
-        /*String hari = (String)cbWaktu.getSelectedItem();*/
+        /*String hari = (String)cbWaktu.getSelectedItem();
         String kota = (String)txtInput.getText();
         
         if (txtInput.getText().equals("bandung") && cbWaktu.getSelectedItem().equals("Hari ini")) {
@@ -406,8 +397,15 @@ public class FrmCuaca extends javax.swing.JFrame {
             lblKecepatan.setText("40.0 m/s");
             lblKelembapan.setText("100.2 %");
             lblTekanan.setText("200.2 hPa");
-        }
+        }*/
     }//GEN-LAST:event_cbWaktuActionPerformed
+
+    private void MenuInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInputActionPerformed
+        // TODO add your handling code here:
+        InputCuaca menuInput = new InputCuaca();
+        menuInput.setLocationRelativeTo(null);
+        menuInput.setVisible(true);
+    }//GEN-LAST:event_MenuInputActionPerformed
 
     /**
      * @param args the command line arguments
@@ -448,6 +446,7 @@ public class FrmCuaca extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuAbout;
     private javax.swing.JMenuItem MenuExit;
     private javax.swing.JMenuItem MenuHelp;
+    private javax.swing.JMenuItem MenuInput;
     private javax.swing.JComboBox cbWaktu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
