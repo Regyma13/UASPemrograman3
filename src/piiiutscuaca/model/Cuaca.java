@@ -5,6 +5,8 @@
  */
 package piiiutscuaca.model;
 
+import java.sql.Date;
+
 /**
  * model untuk menampung data cuaca
  * @author hahn
@@ -12,6 +14,7 @@ package piiiutscuaca.model;
 public class Cuaca {
     
     private int id;
+    private Date tanggal;
     private String namaKota;
     private double suhu;
     private double suhuMaks;
@@ -20,10 +23,11 @@ public class Cuaca {
     private double kelembapan;
     private double tekanan;
 
-    public Cuaca(int id, String namaKota, double suhu, 
+    public Cuaca(int id, Date tanggal, String namaKota, double suhu, 
             double suhuMaks, double suhuMin, double kecepatanAngin,
             double kelembapan, double tekanan) {
         this.id = id;
+        this.tanggal = tanggal;
         this.namaKota = namaKota;
         this.suhu = suhu;
         this.suhuMaks = suhuMaks;
@@ -42,6 +46,15 @@ public class Cuaca {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+     public Date getTanggal() {
+        return tanggal;
+    }
+
+    
+    public void setTanggal(Date tanggal) {
+        this.tanggal = tanggal;
     }
 
     public String getNamaKota() {

@@ -58,7 +58,7 @@ public class koneksi extends javax.swing.JFrame {
         jLabel3.setText("Password User");
 
         btnKoneksi.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
-        btnKoneksi.setText("Koneksikan!");
+        btnKoneksi.setText("Konek!");
         btnKoneksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnKoneksiActionPerformed(evt);
@@ -72,10 +72,6 @@ public class koneksi extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnKoneksi)
-                .addGap(89, 89, 89))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -89,7 +85,8 @@ public class koneksi extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtDatabase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtDatabase, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnKoneksi, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(103, 103, 103)
                         .addComponent(jLabel4)))
@@ -133,14 +130,18 @@ public class koneksi extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection(host, user, pass);
             JOptionPane.showMessageDialog(null,"Koneksi Berhasil");
             dispose();
-            FrmCuaca frmCuaca = new FrmCuaca();
-            frmCuaca.setLocationRelativeTo(null);
-            frmCuaca.setVisible(true);
+            
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null,"Username atau Password Database Salah!!" + "\n" + 
                                                "Mangga Cobian Ngangge Database p3_java" + "\n" +
                                                "Usernamena root, Passwordna kosongkeun");
+            
         }
+        
+        FrmCuaca frmCuaca = new FrmCuaca();
+        frmCuaca.setLocationRelativeTo(null);
+        frmCuaca.setVisible(true);
     }//GEN-LAST:event_btnKoneksiActionPerformed
 
     /**

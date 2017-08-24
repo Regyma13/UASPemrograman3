@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import javax.swing.JOptionPane;
 import piiiutscuaca.koneksi.koneksi;
@@ -20,13 +21,40 @@ import java.util.Date;
  *
  * @author Regyma
  */
-public class InputCuaca extends javax.swing.JFrame {
-
+public class EditCuaca extends javax.swing.JFrame {
+    int id;
     /**
      * Creates new form InputCuaca
      */
-    public InputCuaca() {
+    public EditCuaca(int id) {
+        this.id = id;
+        System.out.println(id);
         initComponents();
+        
+        try{
+           //membuat statemen pemanggilan data pada table tblGaji dari database
+            Connection conn = (Connection)piiiutscuaca.koneksi.koneksi.configDB();
+            String sql = "SELECT * FROM t_cuaca where id='"+id+"' LIMIT 1";
+            Statement sta = conn.createStatement();
+            ResultSet rse = sta.executeQuery(sql);
+
+           //penelusuran baris pada tabel tblGaji dari database
+           while(rse.next ()){
+            dcTanggal.setDate(rse.getDate("date"));
+            txtNamaKota.setText(rse.getString("nama_kota"));
+            txtSuhu.setText(rse.getString("suhu"));
+            txtSuhuMaks.setText(rse.getString("suhu_maks"));
+            txtSuhuMin.setText(rse.getString("suhu_min"));
+            txtKecepatanAngin.setText(rse.getString("kecepatan_angin"));
+            txtKelembapan.setText(rse.getString("kelembapan"));
+            txtTekanan.setText(rse.getString("tekanan_udara"));
+            cmbStatus.setSelectedItem(rse.getString("status"));
+            }
+      }catch(SQLException err){
+            JOptionPane.showMessageDialog(null, err.getMessage() );
+      }
+        
+        // select ti cuaca where id = id
     }
 
     /**
@@ -58,7 +86,6 @@ public class InputCuaca extends javax.swing.JFrame {
         dcTanggal = new com.toedter.calendar.JDateChooser();
         cmbStatus = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,7 +104,7 @@ public class InputCuaca extends javax.swing.JFrame {
         txtTekanan.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
 
         btnSimpan.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
-        btnSimpan.setText("Input");
+        btnSimpan.setText("update");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSimpanActionPerformed(evt);
@@ -106,7 +133,7 @@ public class InputCuaca extends javax.swing.JFrame {
         jLabel7.setText("Tekanan Udara");
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel8.setText("INPUT DATA CUACA");
+        jLabel8.setText("EDIT DATA CUACA");
 
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel9.setText("Tanggal");
@@ -119,14 +146,6 @@ public class InputCuaca extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel10.setText("Status");
 
-        btnExit.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
-        btnExit.setText("Exit");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,7 +153,7 @@ public class InputCuaca extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addComponent(jLabel8)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,10 +180,7 @@ public class InputCuaca extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(dcTanggal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnExit)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSimpan)))))
+                            .addComponent(btnSimpan, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(46, 46, 46))
         );
         layout.setVerticalGroup(
@@ -209,9 +225,7 @@ public class InputCuaca extends javax.swing.JFrame {
                     .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSimpan)
                 .addGap(18, 18, 18))
         );
 
@@ -221,15 +235,14 @@ public class InputCuaca extends javax.swing.JFrame {
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
         
-        
         try{
             Connection conn =null;
             ResultSet rs = null;
             PreparedStatement pst = null;
 
             conn =(Connection)koneksi.configDB();
-            String sql = "insert into t_cuaca(date,nama_kota,suhu,suhu_maks,suhu_min,kecepatan_angin,kelembapan,tekanan_udara,status)" +
-                         "values(?,?,?,?,?,?,?,?,?)";
+            String sql = "update t_cuaca set date=?, nama_kota=?, suhu=?, suhu_maks=?, suhu_min=?, kecepatan_angin=?, kelembapan=?, "
+                                     + " tekanan_udara=?, status=? where id=?";
             pst = conn.prepareStatement(sql);
             
             SimpleDateFormat fmt = new SimpleDateFormat("YYYY-MM-dd");
@@ -243,30 +256,29 @@ public class InputCuaca extends javax.swing.JFrame {
             pst.setString(7, txtKelembapan.getText());
             pst.setString(8, txtTekanan.getText());
             pst.setString(9, (String) cmbStatus.getSelectedItem());
+            pst.setInt(10, id);
             pst.execute();
             
             JOptionPane.showMessageDialog(null, "Penyimpanan Data Berhasil");
+            this.dispose();
+//            dcTanggal.setDate(null);
+//            txtNamaKota.setText("");
+//            txtSuhu.setText("");
+//            txtSuhuMaks.setText("");
+//            txtSuhuMin.setText("");
+//            txtKecepatanAngin.setText("");
+//            txtKelembapan.setText("");
+//            txtTekanan.setText("");
             
-            dcTanggal.setDate(null);
-            txtNamaKota.setText("");
-            txtSuhu.setText("");
-            txtSuhuMaks.setText("");
-            txtSuhuMin.setText("");
-            txtKecepatanAngin.setText("");
-            txtKelembapan.setText("");
-            txtTekanan.setText("");
             
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Nama Kota dan Tanggal Sudah Ada");
+            JOptionPane.showMessageDialog(this, e.getMessage() +e);
         }
         
+        
+        //
     }//GEN-LAST:event_btnSimpanActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -285,14 +297,15 @@ public class InputCuaca extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InputCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InputCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InputCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InputCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditCuaca.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -304,7 +317,6 @@ public class InputCuaca extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExit;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JComboBox<String> cmbStatus;
     private com.toedter.calendar.JDateChooser dcTanggal;
